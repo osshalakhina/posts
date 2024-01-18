@@ -62,7 +62,56 @@ const posts = [
   getInitialPost("Post name 3", "Description"),
 ];
 
+// Новый пост
+
+const handleNewPost = () => {
+  const newPost = getInitialPost("New Post", "New Description");
+  posts.push(newPost);
+
+  const postEl = createWrapperEl();
+  postEl.dataset.postId = newPost.id;
+
+  const h2El = document.createElement("h2");
+  h2El.textContent = newPost.name;
+
+  const pEl = document.createElement("p");
+  pEl.textContent = newPost.description;
+
+  const inputElName = createNameInput();
+  const inputElDescription = createDescriptionInput();
+
+  const saveButtonEl = document.createElement("button");
+  saveButtonEl.textContent = "Save";
+  saveButtonEl.addEventListener("click", () => {
+    handleSaveName(newPost.id, inputElName);
+    handleSaveDescription(newPost.id, inputElDescription);
+  });
+
+  const removeButtonEl = document.createElement("button");
+  removeButtonEl.textContent = "Remove Post";
+  removeButtonEl.addEventListener("click", () => handleRemovePost(newPost.id));
+
+  postEl.append(h2El);
+  postEl.append(inputElName);
+  postEl.append(pEl);
+  postEl.append(inputElDescription);
+  postEl.append(saveButtonEl);
+  postEl.append(removeButtonEl);
+  rootEl.append(postEl);
+};
+
+//Кнопка нового поста
+const createNewPostButton = () => {
+  const buttonEl = document.createElement("button");
+  buttonEl.textContent = "Add New Post";
+  buttonEl.addEventListener("click", handleNewPost);
+  return buttonEl;
+};
+
 const rootEl = document.querySelector("#root");
+
+const newPostButton = createNewPostButton();
+rootEl.append(newPostButton);
 
 posts.forEach((post) => {
   const postEl = createWrapperEl();
@@ -92,10 +141,11 @@ posts.forEach((post) => {
   );
 
   postEl.append(h2El);
-  postEl.append(pEl);
   postEl.append(inputElName);
+  postEl.append(pEl);
   postEl.append(inputElDescription);
   postEl.append(saveButtonEl);
   rootEl.append(postEl);
   postEl.append(removeButtonEl);
+  rootEl.append(newPostButton);
 });
